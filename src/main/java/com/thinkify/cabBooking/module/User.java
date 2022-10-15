@@ -2,20 +2,26 @@ package com.thinkify.cabBooking.module;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
 
 @Data
 @Entity
-public class User {
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+public abstract class User {
+     @Id
+     @GeneratedValue(strategy = GenerationType.AUTO)
+     private String mobileNumber;
 
-    @Id
-    private String mobileNumber;
+     @NotNull
+     private String name;
 
-    @NotNull
-    private String name;
+     @NotNull
+     private String password;
 
-    @NotNull
-    private String password ;
+     @NotNull
+     private String role;
+
+
 }

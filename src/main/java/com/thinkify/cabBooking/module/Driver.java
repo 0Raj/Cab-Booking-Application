@@ -1,22 +1,26 @@
 package com.thinkify.cabBooking.module;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
-public class Driver {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long driverID;
+public class Driver extends User {
 
+    @OneToOne(mappedBy = "driver")
     private Car car;
 
     private String drivingLicense;
 
-    private Queue<Booking> bookings;
+    @JsonIgnore
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL)
+    private List<Booking> bookingHistory = new ArrayList<>();
 
+    @JsonIgnore
+    private Status status;
 
 }
