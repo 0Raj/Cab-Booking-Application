@@ -3,6 +3,7 @@ package com.thinkify.cabBooking.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,14 +17,16 @@ public class ProjectSecurityConfig {
         httpSecurity.authorizeHttpRequests(auth ->
                 {
                     try {
-                        auth.antMatchers(HttpMethod.POST,"/user").permitAll()
-                                .antMatchers("/user","/driver").authenticated()
-                                .and().csrf().disable();
+                        auth.antMatchers("/user","/driver").permitAll()
+                                .antMatchers("/car").hasAnyRole("DRIVER")
+                                .antMatchers("/search","/book").hasAnyRole("CUSTOMER")
+                                .and().csrf().disable().formLogin().loginProcessingUrl("/login")
+                                .and().logout().logoutUrl("/logout");
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 }
-                ).httpBasic();
+                ).httpBasic(Customizer.withDefaults());
 
         return httpSecurity.build();
     }

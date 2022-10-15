@@ -3,6 +3,7 @@ package com.thinkify.cabBooking.config;
 import com.thinkify.cabBooking.exception.UserNotFoundException;
 import com.thinkify.cabBooking.module.SecurityUserDetails;
 import com.thinkify.cabBooking.module.User;
+import com.thinkify.cabBooking.repository.DriverDAO;
 import com.thinkify.cabBooking.repository.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

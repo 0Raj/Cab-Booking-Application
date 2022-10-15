@@ -11,16 +11,20 @@ import javax.validation.constraints.NotNull;
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class User {
      @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)
      private String mobileNumber;
 
      @NotNull
      private String name;
 
      @NotNull
-     private String password;
+     private Gender gender;
 
      @NotNull
+     private Integer age;
+
+     @NotNull
+     private String password;
+
      private String role;
 
 

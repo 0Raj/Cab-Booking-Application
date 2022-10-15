@@ -11,7 +11,8 @@ import java.util.List;
 @Entity
 public class Driver extends User {
 
-    @OneToOne(mappedBy = "driver")
+    @JsonIgnore
+    @OneToOne(mappedBy = "driver",cascade = CascadeType.ALL)
     private Car car;
 
     private String drivingLicense;
