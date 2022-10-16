@@ -1,5 +1,6 @@
 package com.thinkify.cabBooking.module;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Queue;
 
 public class Customer extends User {
 
+    @JsonIgnore
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings = new ArrayList<>();
 

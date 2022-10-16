@@ -1,12 +1,14 @@
 package com.thinkify.cabBooking.service;
 
-import com.thinkify.cabBooking.module.Driver;
-import com.thinkify.cabBooking.module.Location;
-import com.thinkify.cabBooking.module.UserDTO;
+import com.thinkify.cabBooking.module.*;
+
+import java.util.List;
 
 public interface UserService {
 
-    public boolean addUser(UserDTO userDTO);
+    public boolean addUser(CustomerDTO userDTO);
 
-    public Driver searchRide(Location location);
+    public List<Driver> searchRide(LocationDto locationDto);
+
+    public Booking bookRide(Driver driver, LocationDto locationDto);
 }
