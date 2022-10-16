@@ -24,4 +24,6 @@ public class Driver extends User {
     @JsonIgnore
     private Status status;
 
+    private Location currentLocation;
+
 }
