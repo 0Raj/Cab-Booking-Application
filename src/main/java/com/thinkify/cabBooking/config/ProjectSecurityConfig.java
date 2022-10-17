@@ -19,11 +19,9 @@ public class ProjectSecurityConfig {
         httpSecurity.authorizeHttpRequests(auth ->
                 {
                     try {
-                        auth.antMatchers("/user","/driver").permitAll()
-                                .antMatchers("/car").authenticated()
-                                .antMatchers("/search","/book").authenticated()
-                                .antMatchers("/car").hasAnyRole("DRIVER")
-                                .antMatchers("/search","/book").hasAnyRole("CUSTOMER")
+                        auth.antMatchers("/login").permitAll()
+                                .antMatchers("/driver/car").hasAnyRole("DRIVER")
+                                .antMatchers("/customer/search","/customer/bookRide").hasAnyRole("CUSTOMER")
                                 .and().csrf().disable().formLogin().loginProcessingUrl("/login")
                                 .and().logout().logoutUrl("/logout");
                     } catch (Exception e) {

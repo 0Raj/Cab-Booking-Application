@@ -1,9 +1,11 @@
 package com.thinkify.cabBooking.module;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 
 @Data
@@ -23,8 +25,10 @@ public abstract class User {
      private Integer age;
 
      @NotNull
+     @JsonIgnore
      private String password;
 
+     @JsonIgnore
      private String role;
 
 

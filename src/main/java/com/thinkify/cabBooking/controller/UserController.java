@@ -7,17 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/customer")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<String> registerUser(@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity<String> registerUser(@Valid @RequestBody CustomerDTO customerDTO){
         userService.addUser(customerDTO);
         return new ResponseEntity<>("Customer added successfully", HttpStatus.OK);
 
@@ -31,9 +32,9 @@ public class UserController {
         return new ResponseEntity<>(driverList,HttpStatus.OK);
     }
 
-    @PostMapping("/bookRide")
-    public ResponseEntity<Booking> bookRide(@RequestBody Driver driver,@RequestBody LocationDto locationDto){
-        Booking booking = userService.bookRide(driver,locationDto);
+    @PostMapping("/bookRide/{driverID}")
+    public ResponseEntity<Booking> bookRide(@PathVariable("driverID") String driverID,@RequestBody LocationDto locationDto){
+        Booking booking = userService.bookRide(driverID,locationDto);
         return new ResponseEntity<>(booking,HttpStatus.OK);
     }
 }

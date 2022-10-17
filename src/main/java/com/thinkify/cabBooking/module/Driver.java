@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 public class Driver extends User {
 
-    @JsonIgnore
+
     @OneToOne(mappedBy = "driver",cascade = CascadeType.ALL)
     private Car car;
 
@@ -21,9 +21,17 @@ public class Driver extends User {
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL)
     private List<Booking> bookingHistory = new ArrayList<>();
 
-    @JsonIgnore
+
     private Status status;
 
-    private Location currentLocation;
 
+    @Override
+    public String toString() {
+        return "Driver{" +
+                "car=" + car +
+                ", drivingLicense='" + drivingLicense + '\'' +
+                ", bookingHistory=" + bookingHistory +
+                ", status=" + status +
+                '}';
+    }
 }

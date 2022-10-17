@@ -29,6 +29,7 @@ public class SecurityAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
+        System.out.println(authentication);
         Optional<User> optUser = userDAO.findById(authentication.getName());
 
         if (optUser.isPresent()){

@@ -10,5 +10,5 @@ public interface UserService {
 
     public List<Driver> searchRide(LocationDto locationDto);
 
-    public Booking bookRide(Driver driver, LocationDto locationDto);
+    public Booking bookRide(String driverID, LocationDto locationDto);
 }

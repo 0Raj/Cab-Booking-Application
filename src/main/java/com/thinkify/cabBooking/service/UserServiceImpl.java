@@ -1,5 +1,6 @@
 package com.thinkify.cabBooking.service;
 
+import com.thinkify.cabBooking.exception.DriverNotFoundException;
 import com.thinkify.cabBooking.exception.NoStrongPasswordException;
 import com.thinkify.cabBooking.module.*;
 import com.thinkify.cabBooking.repository.CustomerDAO;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,10 +48,10 @@ public class UserServiceImpl implements UserService {
         List<Driver> driverList = new ArrayList<>();
 
         for(Driver driver : driverDAO.findAll()){
-            System.out.println("check");
-            Float lattitude = Math.abs(driver.getCurrentLocation().getLattitude()- customerLocation.getLattitude());
-            Float longitude = Math.abs(driver.getCurrentLocation().getLongitude() - customerLocation.getLongitude());
-            System.out.println("check");
+           // System.out.println(driver);
+            Float lattitude = Math.abs(driver.getCar().getCurrentLocation().getLattitude()- customerLocation.getLattitude());
+            Float longitude = Math.abs(driver.getCar().getCurrentLocation().getLongitude() - customerLocation.getLongitude());
+
             if(lattitude<6 && longitude <6){
                 driverList.add(driver);
             }
@@ -58,8 +60,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Booking bookRide(Driver driver, LocationDto locationDto) {
+    public synchronized Booking bookRide(String driverID, LocationDto locationDto) {
 
+        Optional<Driver> driverOptional = driverDAO.findById(driverID);
+
+        if (!driverOptional.isPresent()){
+            throw new DriverNotFoundException("The provided Driver Not Available");
+        }
+
+        Driver driver = driverOptional.get();
         Customer customer = (Customer) loggedInUser.getCurrentUser();
         Booking booking = new Booking();
         booking.setDriver(driver);
@@ -67,8 +76,7 @@ public class UserServiceImpl implements UserService {
         booking.setDestination(locationDto.getDestination());
         booking.setSourceLocation(locationDto.getSourceLocation());
         booking.setTimeStamp(LocalDateTime.now());
-        booking.setBillAmount(driver.getCar().getFarePerKM()*(locationDto.getSourceLocation().getLongitude()
-                -locationDto.getDestination().getLongitude()));
+        booking.setBillAmount(driver.getCar().getFarePerKM()*3);
 
         driver.setStatus(Status.ONGOING);
         driver.getBookingHistory().add(booking);
@@ -76,9 +84,9 @@ public class UserServiceImpl implements UserService {
         customer.getBookings().add(booking);
 
         driverDAO.save(driver);
-        customerDAO.save(customer);
+       Customer customer1 = customerDAO.save(customer);
 
-        return booking;
+        return customer1.getBookings().get(customer1.getBookings().size()-1 );
     }
 
     private Customer mapToCustomer(CustomerDTO customerDTO){
